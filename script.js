@@ -1,5 +1,5 @@
 // GIVEN I need a new, secure password
-function generatePassword(passwordLength, upperCaseCharacters, numericalCharacters, specialCharacters) {
+function generatePassword(passwordLength, lowerCaseCharacters, upperCaseCharacters, numericalCharacters, specialCharacters) {
   var randomPassword = "Your password is: " + password;
   // WHEN I click the button to generate a password
   // THEN I am presented with a series of prompts for password criteria
@@ -9,14 +9,10 @@ function generatePassword(passwordLength, upperCaseCharacters, numericalCharacte
   // WHEN prompted for password criteria
   // THEN I select which criteria to include in the password
 
+  // Prompt for input of password length
   var passwordLength = prompt("Enter the length of password between 8-128 characters.")
 
-  // WHEN prompted for the length of the password
-  // THEN I choose a length of at least 8 characters and no more than 128 characters
-
-  // WHEN asked for character types to include in the password
-  // THEN I confirm whether or not to include lowercase, uppercase, numeric, and/or special characters
-
+  var lowerCaseCharacters = confirm("Include lowercase characters?"); //true-false
   var upperCaseCharacters = confirm("Include uppercase characters?"); //true-false
   var numericalCharacters = confirm("Include numerical characters?"); //true-false
   var specialCharacters = confirm("Include special characters?"); //true-false
@@ -24,7 +20,7 @@ function generatePassword(passwordLength, upperCaseCharacters, numericalCharacte
   // WHEN I answer each prompt
   // THEN my input should be validated and at least one character type should be selected-edge case fault(alert)
   
-  // 
+  // Creating the arrays from ASCII Character Codes for uppercase, lowercase, numbers, and special characters
   var UPPERCASE_CHAR_CODES = arrayFromLowToHigh(65, 90)
   var LOWERCASE_CHAR_CODES = arrayFromLowToHigh(97, 122)
   var NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57)
@@ -36,7 +32,7 @@ function generatePassword(passwordLength, upperCaseCharacters, numericalCharacte
     arrayFromLowToHigh(123, 126)
   )
 
-  // Generate an array, and add 'i' to the empty array
+  // Generate an array, add 'i' to the empty array, return the new array
   function arrayFromLowToHigh(low, high) {
     var array = []
     for (var i = low; i <= high; i++) {
@@ -45,12 +41,13 @@ function generatePassword(passwordLength, upperCaseCharacters, numericalCharacte
     return array
   }
 
-  // Default to lower case characters
-  var charCodes = LOWERCASE_CHAR_CODES
+  // Default to empty array
+  var charCodes = []
   // If uppercase, numerical and special characters === true include in password
-  if (upperCaseCharacters === true) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
-  if (numericalCharacters === true) charCodes = charCodes.concat(NUMBER_CHAR_CODES)
-  if (specialCharacters === true) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
+  if (lowerCaseCharacters === true) charCodes = LOWERCASE_CHAR_CODES;
+  if (upperCaseCharacters === true) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES);
+  if (numericalCharacters === true) charCodes = charCodes.concat(NUMBER_CHAR_CODES);
+  if (specialCharacters === true) charCodes = charCodes.concat(SYMBOL_CHAR_CODES);
   
   // Empty string to recieve password characters
   var passwordCharacters = []
