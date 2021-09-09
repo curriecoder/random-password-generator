@@ -1,20 +1,28 @@
-// GIVEN I need a new, secure password
+// Main function is defined and the arguments are given
 function generatePassword(passwordLength, lowerCaseCharacters, upperCaseCharacters, numericalCharacters, specialCharacters) {
-  var randomPassword = "Your password is: " + password;
-  // WHEN I click the button to generate a password
-  // THEN I am presented with a series of prompts for password criteria
 
+  // Alerting user of the accepted password criteria
   alert("Create a password with 8-128 characters using lower/uppercase alphabetical, numerical, and special characters.")
-
-  // WHEN prompted for password criteria
-  // THEN I select which criteria to include in the password
 
   // Prompt for input of password length
   var passwordLength = prompt("Enter the length of password between 8-128 characters.")
 
+  function checkPassword () {
+    if (passwordLength < 8 || passwordLength > 128) {
+      alert("Password length must be between 8-128 characters")
+    }
+    // generatePassword(); TODO - figure out how to get back to the top after password is wrong length.
+  }
+
+  checkPassword()
+
+  // Prompt for including lowercase characters
   var lowerCaseCharacters = confirm("Include lowercase characters?"); //true-false
+  // Prompt for including uppercase characters
   var upperCaseCharacters = confirm("Include uppercase characters?"); //true-false
+  // Prompt for including numerical characters
   var numericalCharacters = confirm("Include numerical characters?"); //true-false
+  // Prompt for including special characters
   var specialCharacters = confirm("Include special characters?"); //true-false
 
   // WHEN I answer each prompt
@@ -36,30 +44,38 @@ function generatePassword(passwordLength, lowerCaseCharacters, upperCaseCharacte
   function arrayFromLowToHigh(low, high) {
     var array = []
     for (var i = low; i <= high; i++) {
-      array.push(i)
+      array.push(i);
     }
-    return array
+    return array;
   }
 
   // Default to empty array
   var charCodes = []
-  // If uppercase, numerical and special characters === true include in password
+  // If uppercase, numerical and special characters === true include them in password
   if (lowerCaseCharacters === true) charCodes = LOWERCASE_CHAR_CODES;
   if (upperCaseCharacters === true) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES);
   if (numericalCharacters === true) charCodes = charCodes.concat(NUMBER_CHAR_CODES);
   if (specialCharacters === true) charCodes = charCodes.concat(SYMBOL_CHAR_CODES);
+  else noInput()
   
+  // Function for no input for character type
+  function noInput() {
+    if (lowerCaseCharacters === false && upperCaseCharacters === false && 
+    numericalCharacters === false && specialCharacters === false)
+    alert("Can't build something out of nothing!")
+  }
+
   // Empty string to recieve password characters
   var passwordCharacters = []
   // Loop through charCodes length 
   for (var i = 0; i < passwordLength; i++) {
-    // Get random whole number of index
+    // Get random whole number from index
     var characterCode = charCodes[Math.floor(Math.random() * charCodes.length)]
     passwordCharacters.push(String.fromCharCode(characterCode))
   }
+  // Returns password characters and joins into string
   return passwordCharacters.join("")
-   
-  return randomPassword;
+  
 }
 
 // Assignment Code
