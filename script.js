@@ -1,5 +1,5 @@
 // GIVEN I need a new, secure password
-function generatePassword() {
+function generatePassword(passwordLength, upperCaseCharacters, numericalCharacters, specialCharacters) {
   var randomPassword = "Your password is: " + password;
   // WHEN I click the button to generate a password
   // THEN I am presented with a series of prompts for password criteria
@@ -18,48 +18,50 @@ function generatePassword() {
   // THEN I confirm whether or not to include lowercase, uppercase, numeric, and/or special characters
 
   var upperCaseCharacters = confirm("Include uppercase characters?"); //true-false
-  var lowerCaseCharacters = confirm("Include lowercase characters?"); //true-false
   var numericalCharacters = confirm("Include numerical characters?"); //true-false
   var specialCharacters = confirm("Include special characters?"); //true-false
 
   // WHEN I answer each prompt
   // THEN my input should be validated and at least one character type should be selected-edge case fault(alert)
-
-  var upperCaseArr = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-  var lowerCaseArr = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-  var numericalArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-  var specialCharactersArr = ["!", '"', "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "]", "^", "_", "`", "{", "|", "}", "~"]
-
-  // WHEN all prompts are answered
-  // THEN a password is generated that matches the selected criteria
-  // if uppercase, lowercase, etc === true include in password
   
+  // 
+  var UPPERCASE_CHAR_CODES = arrayFromLowToHigh(65, 90)
+  var LOWERCASE_CHAR_CODES = arrayFromLowToHigh(97, 122)
+  var NUMBER_CHAR_CODES = arrayFromLowToHigh(48, 57)
+  var SYMBOL_CHAR_CODES = arrayFromLowToHigh(33, 47).concat(
+    arrayFromLowToHigh(58,64)
+    ).concat(
+    arrayFromLowToHigh(91, 96)
+    ).concat(
+    arrayFromLowToHigh(123, 126)
+  )
+
+  // Generate an array, and add 'i' to the empty array
+  function arrayFromLowToHigh(low, high) {
+    var array = []
+    for (var i = low; i <= high; i++) {
+      array.push(i)
+    }
+    return array
+  }
+
+  // Default to lower case characters
+  var charCodes = LOWERCASE_CHAR_CODES
+  // If uppercase, numerical and special characters === true include in password
+  if (upperCaseCharacters === true) charCodes = charCodes.concat(UPPERCASE_CHAR_CODES)
+  if (numericalCharacters === true) charCodes = charCodes.concat(NUMBER_CHAR_CODES)
+  if (specialCharacters === true) charCodes = charCodes.concat(SYMBOL_CHAR_CODES)
+  
+  // Empty string to recieve password characters
   var passwordCharacters = []
-
-  if (upperCaseCharacters === true) {
-    // access array of uppercase randomly
+  // Loop through charCodes length 
+  for (var i = 0; i < passwordLength; i++) {
+    // Get random whole number of index
+    var characterCode = charCodes[Math.floor(Math.random() * charCodes.length)]
+    passwordCharacters.push(String.fromCharCode(characterCode))
   }
-  else //don't include uppercase array
-
-  if (lowerCaseCharacters === true) {
-    // access array of lowercase randomly
-  }
-  else //don't include lowercase
-
-  if (numericalCharacters === true) {
-    // access array of numerical randomly
-  }
-  else //don't include numerical
-  
-  if (specialCharacters === true) {
-    // access array of specailcharacters randomly
-  }
-  else //don't include specialcharacters
-  // need an else if none of the classes were selected.
-
-  // WHEN the password is generated
-  // THEN the password is either displayed in an alert or written to the page
-
+  return passwordCharacters.join("")
+   
   return randomPassword;
 }
 
@@ -72,6 +74,7 @@ function writePassword() {
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
+
 
 }
 
